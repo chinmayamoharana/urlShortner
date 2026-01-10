@@ -10,7 +10,13 @@ require("dotenv").config();
 
 connectDB();
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://url-shoortner.netlify.app",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/url", require("./routes/urlRoutes")); // ✅ FIX 2
