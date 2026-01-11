@@ -1,25 +1,33 @@
 console.log("hello world");
 
-const express = require("express");   // ✅ FIX 1
+const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const connectDB = require("./config/db");
-
-const app = express();
 require("dotenv").config();
 
+const app = express();
+
+// ✅ CONNECT DB
 connectDB();
 
-const corsOptions = {
-  origin: "https://url-shoortner.netlify.app",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"],
-};
+// ✅ ALLOW BOTH LOCAL + NETLIFY
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://url-shoortner.netlify.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
-app.use(cors(corsOptions));
+// ✅ MIDDLEWARE
 app.use(express.json());
 
-app.use("/api/url", require("./routes/urlRoutes")); // ✅ FIX 2
+// ✅ ROUTES
+app.use("/api/url", require("./routes/urlRoutes"));
 
 const PORT = process.env.PORT || 5000;
 
